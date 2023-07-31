@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import { Machine } from '@/types/dbTypes';
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'PUT') {
     return res.status(405).end();
   }
@@ -21,3 +22,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.json(updatedMachine);
 }
+
+export default withApiAuthRequired(handler);

@@ -2,12 +2,12 @@ export type Role = 'USER' | 'ADMIN';
   
 export interface User {
 id: number;
-auth0Id: string;
-tenantId: number;
+auth0Id?: string;
+tenantId?: number;
 name: string | null;
 role: Role;
-tenant: Tenant;
-machines: Machine[];
+tenant?: Tenant;
+machines?: Machine[];
 }
 
 export interface Tenant {

@@ -4,7 +4,10 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { useState, useEffect } from "react";
 
 async function fetchUserRole(auth0Id: string) {
-  const response = await fetch(`/api/role/${auth0Id}`);
+  const response = await fetch(`/api/role/${auth0Id}`, {
+    method: "GET",
+    credentials: "include",
+  });
   const data = await response.json();
   return data.role;
 }

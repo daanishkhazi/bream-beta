@@ -33,6 +33,7 @@ export default function NewJobPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formValues),
+      credentials: "include",
     });
 
     if (res.ok) {

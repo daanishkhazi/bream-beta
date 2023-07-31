@@ -27,6 +27,7 @@ export default function JobPage({ job }: { job: Job }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formValues),
+      credentials: "include",
     });
 
     if (res.ok) {

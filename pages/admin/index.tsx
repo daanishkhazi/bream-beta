@@ -11,7 +11,7 @@ import GreenButton from "@/components/GreenButton";
 export default function Admin({ machines }: { machines: Machine[] }) {
   return (
     <Layout>
-      <div className="p-16 min-h-screen bg-[#FCFDF7]">
+      <div className="px-16 py-12 min-h-screen bg-[#FCFDF7]">
         {/* link on the right */}
         <div className="flex justify-end mb-8">
           <Link href="/admin/users" className="text-blue-700">

@@ -1,10 +1,11 @@
 import prisma from "@/lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
-export default async function handler(
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
-) {
+) => {
   let { id } = req.query;
   if (Array.isArray(id)) {
     id = id[0];
@@ -29,3 +30,5 @@ export default async function handler(
     return res.status(500).json({ error: "An error occurred" }); // Internal Server Error
   }
 }
+
+export default withApiAuthRequired(handler);

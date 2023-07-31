@@ -26,6 +26,7 @@ export default function MachinePage({ machine }: { machine: Machine }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formValues),
+      credentials: "include",
     });
 
     if (res.ok) {
