@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  auth0Id  String    @unique
+  tenantId Int
+  name     String?
+  role     Role      @default(USER)
+  tenant   Tenant    @relation(fields: [tenantId], references: [id])
+  machines Machine[] @relation("userMachine")
+}
+
+model Tenant {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  codes    Code[]
+  machines Machine[]
+  users    User[]
+}
+
+model Code {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique
+  email    String
+  valid    Boolean @default(true)
+  tenantId Int
+  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+}
+
+model Machine {
+  id               Int     @id @default(autoincrement())
+  name             String
+  description      String?
+  generalNotes     String?
+  maintenanceNotes String?
+  prompt           String?
+  isActive         Boolean @default(true)
+  tenantId         Int
+  jobs             Job[]
+  tenant           Tenant  @relation(fields: [tenantId], references: [id])
+  users            User[]  @relation("userMachine")
+}
+
+model Job {
+  id             Int     @id @default(autoincrement())
+  name           String
+  part           String?
+  description    String?
+  setupNotes     String?
+  operationNotes String?
+  qualityNotes   String?
+  prompt         String?
+  gCode          String?
+  isActive       Boolean @default(true)
+  machineId      Int
+  machine        Machine @relation(fields: [machineId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
