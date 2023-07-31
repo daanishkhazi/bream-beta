@@ -6,16 +6,21 @@ import Link from "next/link";
 import JobItem from "@/components/JobItem";
 import GreenButton from "@/components/GreenButton";
 import { Job } from "@/types/dbTypes";
+import { useRouter } from "next/router";
 
 export default function Admin({ jobs }: { jobs: Job[] }) {
+  const router = useRouter();
+  const { machine } = router.query;
   return (
     <Layout>
       <div className="p-16 min-h-screen bg-[#FCFDF7]">
         <h1 className="text-4xl font-bold mb-8">Jobs</h1>
         {jobs.map((job) => (
-          <JobItem key={job.id} job={job} />
+          <Link key={job.id} href={`/admin/${machine}/${job.id}`}>
+            <JobItem job={job} />
+          </Link>
         ))}
-        <GreenButton href="/admin/create-job" text="ADD JOB" />
+        <GreenButton href={`/admin/${machine}/create-job`} text="ADD JOB" />
       </div>
     </Layout>
   );
