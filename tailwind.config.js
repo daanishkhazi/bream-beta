@@ -14,6 +14,7 @@ module.exports = {
       },
       boxShadow: {
         "nb": "3px 3px black",
+        "nb-small": "1.5px 1.5px black",
       },
     },
   },

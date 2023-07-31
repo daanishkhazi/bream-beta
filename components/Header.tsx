@@ -43,7 +43,7 @@ export default function Header() {
           <button>
             <a
               href="/api/auth/logout"
-              className="transition-colors duration-200 text-gray-900 border-2 border-gray-900 py-1 px-2 hover:bg-gray-900 hover:text-white"
+              className="transition-colors duration-200 text-gray-900 border-2 border-black py-1 px-2 hover:bg-black hover:text-white"
             >
               Logout
             </a>

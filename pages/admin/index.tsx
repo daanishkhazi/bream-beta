@@ -24,7 +24,6 @@ export default function Admin({ machines }: { machines: Machine[] }) {
             <MachineItem machine={machine} />
           </Link>
         ))}
-
         <GreenButton href="/admin/create-machine" text="ADD WORK CENTER" />
       </div>
     </Layout>

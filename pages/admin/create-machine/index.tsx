@@ -47,9 +47,9 @@ export default function NewMachinePage() {
 
   return (
     <Layout>
-      <div className="p-4 flex justify-center min-h-screen bg-[#FCFdf7]">
-        <div className="space-y-4 w-1/2 bg-white border-2 border-gray-500 p-4 shadow rounded-lg h-full">
-          <h1 className="text-xl font-bold text-center">Create New Machine</h1>
+      <div className="p-16 flex justify-center min-h-screen bg-[#FCFdf7]">
+        <div className="space-y-4 w-1/2 bg-white border-2 border-black p-4 shadow-nb rounded-lg h-full">
+          <h1 className="text-3xl font-bold text-center">Create New Machine</h1>
 
           <div className="space-y-4">
             <div>
@@ -99,7 +99,7 @@ export default function NewMachinePage() {
             <div>
               <button
                 onClick={handleCreate}
-                className="py-1 px-2 bg-green-700 rounded font-semibold border-black text-white border-2 shadow-nb hover:scale-[101%] transition ease-in-out delay-50"
+                className="py-1 px-2 bg-green-700 rounded font-semibold border-black text-white border-2 shadow-nb-small hover:scale-[101%] transition ease-in-out delay-50"
               >
                 Create Machine
               </button>

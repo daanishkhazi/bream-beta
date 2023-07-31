@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import { Machine } from "@/types/dbTypes";
+import Link from "next/link";
 
 export default function MachinePage({ machine }: { machine: Machine }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -57,13 +58,12 @@ export default function MachinePage({ machine }: { machine: Machine }) {
 
   return (
     <Layout>
-      <div className="p-4 flex justify-center min-h-screen bg-[#FCFdf7]">
-        <div className="space-y-4 w-1/2 bg-white p-4 shadow rounded-lg h-full">
-          <h1 className="text-xl font-bold text-center">{formValues.name}</h1>
-
+      <div className="p-16 flex flex-col items-center min-h-screen bg-[#FCFdf7]">
+        <div className="space-y-4 w-1/2 bg-white p-4 shadow-nb border-2 border-black rounded-lg h-full">
+          <h1 className="text-3xl font-bold text-center">{formValues.name}</h1>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-bold text-gray-700">
                 Name:
               </label>
               {isEditing ? (
@@ -74,7 +74,7 @@ export default function MachinePage({ machine }: { machine: Machine }) {
                   onChange={handleChange}
                 />
               ) : (
-                <p className="mt-1 text-gray-500">{formValues.name}</p>
+                <p className="mt-1">{formValues.name}</p>
               )}
             </div>
 
@@ -84,7 +84,7 @@ export default function MachinePage({ machine }: { machine: Machine }) {
               { key: "maintenanceNotes" as const, label: "Maintenance Notes" },
             ].map(({ key, label }) => (
               <div key={key}>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-bold text-gray-700">
                   {label}:
                 </label>
                 {isEditing ? (
@@ -96,7 +96,7 @@ export default function MachinePage({ machine }: { machine: Machine }) {
                     onChange={handleChange}
                   />
                 ) : (
-                  <p className="mt-1 text-gray-500">{formValues[key]}</p>
+                  <p className="mt-1">{formValues[key]}</p>
                 )}
               </div>
             ))}
@@ -133,12 +133,20 @@ export default function MachinePage({ machine }: { machine: Machine }) {
             ) : (
               <button
                 onClick={handleEdit}
-                className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
+                className="px-2 bg-cyan-700 rounded font-semibold border-black text-white border-2 shadow-nb-small hover:scale-[101%] transition ease-in-out delay-50"
               >
                 Edit
               </button>
             )}
           </div>
+        </div>
+        <div className="w-1/2 flex justify-center mt-4">
+          <Link
+            className="py-1 px-4 bg-white rounded-lg font-semibold border-black text-center border-2 shadow-nb hover:scale-[101%] transition ease-in-out delay-50"
+            href={`/admin/${machine.id}/jobs`}
+          >
+            Manage this Work Center&apos;s Jobs
+          </Link>
         </div>
       </div>
     </Layout>

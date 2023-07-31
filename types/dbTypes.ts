@@ -45,13 +45,13 @@ export interface Job {
 id: number;
 name: string;
 part: string | null;
-description: string | null;
-setupNotes: string | null;
-operationNotes: string | null;
-qualityNotes: string | null;
-prompt: string | null;
-gCode: string | null;
+description?: string | null;
+setupNotes?: string | null;
+operationNotes?: string | null;
+qualityNotes?: string | null;
+prompt?: string | null;
+gCode?: string | null;
 isActive: boolean;
 machineId: number;
-machine: Machine;
+machine?: Machine;
 }
