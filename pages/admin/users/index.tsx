@@ -12,8 +12,8 @@ function UserItem({ user }: { user: User }) {
       <div className="flex flex-col">
         <h3 className="text-lg font-bold">{user.name}</h3>
       </div>
-      <div className="text-lg" title={user.role === "ADMIN" ? "Admin" : ""} />
-      {`${user.role === "ADMIN" ? "ADMIN" : ""}`}
+      <div className="font-semibold" />
+      {`${user.role === "ADMIN" ? "Admin" : ""}`}
     </div>
   );
 }
@@ -43,7 +43,7 @@ export const getServerSideProps = withPageAuthRequired({
     | { redirect: { destination: string; permanent: boolean } }
   > => {
     const session = await getSession(req, res);
-    console.log(session);
+
     if (!session || !session.user) {
       return { props: { users: [] } };
     }
@@ -74,7 +74,7 @@ export const getServerSideProps = withPageAuthRequired({
         tenantId: true,
       },
     });
-    console.log(users);
+
     return { props: { users } };
   },
 });
