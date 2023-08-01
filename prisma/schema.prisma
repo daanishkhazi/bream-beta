@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(cuid())
   auth0Id  String    @unique
-  tenantId Int
+  tenantId String
   name     String?
+  verified Boolean   @default(false)
   role     Role      @default(USER)
   tenant   Tenant    @relation(fields: [tenantId], references: [id])
   machines Machine[] @relation("userMachine")
 }
 
 model Tenant {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(cuid())
   name     String    @unique
   codes    Code[]
   machines Machine[]
@@ -26,30 +27,31 @@ model Tenant {
 }
 
 model Code {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(cuid())
   code     String  @unique
   email    String
+  name     String  @default("")
   valid    Boolean @default(true)
-  tenantId Int
+  tenantId String
   tenant   Tenant  @relation(fields: [tenantId], references: [id])
 }
 
 model Machine {
-  id               Int     @id @default(autoincrement())
+  id               String  @id @default(cuid())
   name             String
   description      String?
   generalNotes     String?
   maintenanceNotes String?
   prompt           String?
   isActive         Boolean @default(true)
-  tenantId         Int
+  tenantId         String
   jobs             Job[]
   tenant           Tenant  @relation(fields: [tenantId], references: [id])
   users            User[]  @relation("userMachine")
 }
 
 model Job {
-  id             Int     @id @default(autoincrement())
+  id             String  @id @default(cuid())
   name           String
   part           String?
   description    String?
@@ -59,7 +61,7 @@ model Job {
   prompt         String?
   gCode          String?
   isActive       Boolean @default(true)
-  machineId      Int
+  machineId      String
   machine        Machine @relation(fields: [machineId], references: [id])
 }
 

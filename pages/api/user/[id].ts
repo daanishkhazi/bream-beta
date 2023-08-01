@@ -5,8 +5,8 @@ import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
 // Define your request body type
 interface RequestBody {
-  userId: number;
-  machines: number[];
+  userId: string;
+  machines: string[];
   role: Role;
 }
 
@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, machines, role }: RequestBody = req.body;
 
   // Only proceed if the ids match
-  if (Number(id) !== userId) {
+  if (id !== userId) {
     res.status(400).json({ message: "Bad request" });
     return;
   }

@@ -9,6 +9,7 @@ const emailSchema = z.object({
 
 export default function NewMachinePage() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [messageColor, setMessageColor] = useState("green");
 
@@ -20,14 +21,15 @@ export default function NewMachinePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, name }),
         credentials: "include",
       });
 
       if (res.ok) {
         setMessage("Congratulations! Code sent, feel free to send another.");
         setMessageColor("green");
-        setEmail(""); // Reset email field for next input
+        setEmail("");
+        setName("");
       } else {
         setMessage(
           "Failed to send code. Please use a valid email and try again."
@@ -42,8 +44,11 @@ export default function NewMachinePage() {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleEmailChange = (e: any) => {
     setEmail(e.target.value);
+  };
+  const handleNameChange = (e: any) => {
+    setName(e.target.value);
   };
 
   return (
@@ -54,7 +59,7 @@ export default function NewMachinePage() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-bold text-gray-700">
                 Email:
               </label>
               <input
@@ -62,8 +67,21 @@ export default function NewMachinePage() {
                 name="email"
                 type="email"
                 value={email}
-                onChange={handleChange}
+                onChange={handleEmailChange}
                 placeholder="Enter email"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700">
+                Name:
+              </label>
+              <input
+                className="mt-1 px-2 py-1 block w-full rounded-md border-2 border-gray-700 shadow-sm focus:border-gray-700"
+                name="name"
+                type="text"
+                value={name}
+                onChange={handleNameChange}
+                placeholder="Enter name"
               />
             </div>
 

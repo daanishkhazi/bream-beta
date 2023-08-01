@@ -2,12 +2,11 @@ import { useState } from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
-import { parse } from "path";
 
 export default function NewJobPage() {
   const router = useRouter();
   const { machine } = router.query;
-  const machineId = parseInt(machine as string, 10);
+  const machineId = machine;
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",

@@ -1,15 +1,14 @@
 // /api/code.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from '@auth0/nextjs-auth0';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '@/lib/prisma';
 import crypto from 'crypto';
-import postmark from 'postmark';
 
 function generateUniqueCode() {
   return crypto.randomBytes(8).toString('hex');
 }
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+const handler = async(req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
@@ -41,24 +40,33 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     data: {
       email: req.body.email,
       code: uniqueCode,
+      name: req.body.name,
       tenantId: user.tenantId,
     },
   });
 
   // Send email
-  await client.sendEmailWithTemplate({
-    From: 'daanish@trybream.com',
-    To: req.body.email,
-    TemplateAlias: "user-invitation",
-    TemplateModel: {
-      code: uniqueCode,
-      product_name: 'Bream',
-      product_url: 'https://trybream.com',
-      company_name: 'Bream Labs, Inc.',
-      company_address: 'Sammamish, WA 98075',
-      support_email: 'daanish@trybream.com',
-    },
-  });
+  try {
+    await client.sendEmailWithTemplate({
+      From: 'daanish@trybream.com',
+      To: req.body.email,
+      TemplateAlias: "user-invitation",
+      TemplateModel: {
+        code: uniqueCode,
+        name: req.body.name,
+        product_name: 'Bream',
+        product_url: 'https://trybream.com',
+        company_name: 'Bream Labs, Inc.',
+        company_address: 'Sammamish, WA 98075',
+        support_email: 'daanish@trybream.com',
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: 'Error sending email' });
+  }
 
-  res.status(200).json(newCode);
+  return res.status(200).json(newCode);
 }
+
+export default withApiAuthRequired(handler);

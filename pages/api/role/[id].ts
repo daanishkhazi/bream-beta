@@ -6,17 +6,13 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  let { id } = req.query;
-  if (Array.isArray(id)) {
-    id = id[0];
-  }
   if (req.method !== "GET") {
     return res.status(405).end(); // Method Not Allowed
   }
 
   try {
     const user = await prisma.user.findUnique({
-      where: { auth0Id: id },
+      where: { auth0Id: req.query.id as string },
       select: { role: true },
     });
 

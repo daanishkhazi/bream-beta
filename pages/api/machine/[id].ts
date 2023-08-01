@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const machine = req.body;
   const updatedMachine = await prisma.machine.update({
-    where: { id: Number(req.query.id) },
+    where: { id: req.query.id as string },
     data: {
       name: machine.name,
       description: machine.description,

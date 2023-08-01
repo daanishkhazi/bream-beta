@@ -171,7 +171,6 @@ export const getServerSideProps = withPageAuthRequired({
       !params ||
       typeof params.machine !== "string"
     ) {
-      console.log("returning null");
       return { props: { machine: null } };
     }
 
@@ -193,10 +192,7 @@ export const getServerSideProps = withPageAuthRequired({
         },
       };
     }
-    let machineId = parseInt(params.machine);
-    if (isNaN(machineId)) {
-      return { props: { machine: null } };
-    }
+    let machineId = params.machine;
     const machine = await prisma.machine.findUnique({
       where: { id: machineId },
       select: {

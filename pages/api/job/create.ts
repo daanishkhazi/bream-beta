@@ -26,17 +26,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Assuming 'job' is the data sent in the request
   const job = req.body;
-  console.log(job)
-  const {
-    name,
-    description,
-    setupNotes,
-    operationNotes,
-    qualityNotes,
-    isActive,
-    part,
-    machineId
-  } = job;
 
 
   // Create job using the machineId associated with the user

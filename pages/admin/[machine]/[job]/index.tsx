@@ -17,7 +17,6 @@ export default function JobPage({ job }: { job: Job }) {
 
   const handleEdit = () => {
     setIsEditing(true);
-    console.log(formValues);
   };
 
   const handleSave = async () => {
@@ -200,10 +199,7 @@ export const getServerSideProps = withPageAuthRequired({
         },
       };
     }
-    let jobId = parseInt(params.job, 10);
-    if (isNaN(jobId)) {
-      return { props: { job: null } };
-    }
+    let jobId = params.job;
     const job = await prisma.job.findUnique({
       where: { id: jobId },
       select: {

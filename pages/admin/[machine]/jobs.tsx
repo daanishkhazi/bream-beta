@@ -49,18 +49,10 @@ export const getServerSideProps = withPageAuthRequired({
     if (!params) {
       return { props: { jobs: [] } };
     }
-    const machineId =
-      typeof params.machine === "string"
-        ? parseInt(params.machine, 10)
-        : undefined;
+    const machineId = params.machine;
 
-    if (machineId === undefined || isNaN(machineId)) {
-      return { props: { jobs: [] } };
-    }
-
-    console.log(params);
     const jobs = await prisma.job.findMany({
-      where: { machineId: machineId }, // Fetch jobs associated with the machineId
+      where: { machineId: machineId as string }, // Fetch jobs associated with the machineId
       select: {
         id: true,
         description: true,

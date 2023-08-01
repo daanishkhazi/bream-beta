@@ -1,22 +1,29 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { withPageAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import Layout from "@/components/Layout";
-import Link from "next/link";
+import { User } from "@/types/dbTypes";
+import prisma from "@/lib/prisma";
+import VerificationComponent from "@/components/VerificationComponent";
+import Chat from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home({ loadedUser }: { loadedUser: User }) {
   const { user, error, isLoading } = useUser();
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
 
   return user ? (
     <div>
       <Layout>
-        <div className="flex bg-[#FCFDF7] min-h-screen">
-          {/* rest of your homepage contents */}
+        <div className="flex bg-[#FCFDF7] min-h-screen justify-center p-16">
+          {!loadedUser || !loadedUser.verified ? (
+            <VerificationComponent loadedUser={loadedUser} />
+          ) : (
+            <Chat />
+          )}
         </div>
       </Layout>
     </div>
@@ -35,3 +42,42 @@ export default function Home() {
     </div>
   );
 }
+
+// get the user from the database with useSession and return the user object
+export const getServerSideProps = withPageAuthRequired({
+  getServerSideProps: async ({
+    params,
+    req,
+    res,
+  }): Promise<{ props: { loadedUser: User | undefined } }> => {
+    const session = await getSession(req, res);
+    if (!session || !session.user) {
+      return {
+        props: { loadedUser: undefined },
+      };
+    }
+
+    const loadedUser = await prisma.user.findUnique({
+      where: {
+        auth0Id: session.user.sub,
+      },
+      select: {
+        id: true,
+        name: true,
+        tenantId: true,
+        verified: true,
+        role: true,
+      },
+    });
+
+    if (!loadedUser) {
+      return {
+        props: { loadedUser: undefined },
+      };
+    }
+
+    return {
+      props: { loadedUser },
+    };
+  },
+});

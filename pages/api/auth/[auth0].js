@@ -7,7 +7,7 @@ export default handleAuth({
             await handleCallback(req, res, {
                 afterCallback: async (req, res, session) => {
                     const { user } = session
-                    console.log(user);
+                    
                     const existinguser = await prisma.user.findUnique({
                         where : { 
                             auth0Id: user.sub
@@ -17,7 +17,7 @@ export default handleAuth({
                         await prisma.user.create({
                             data: {
                                 auth0Id: user.sub,
-                                tenant: { connect: { id: 1 } },
+                                tenant: { connect: { id: 'clkratdg20000x0z9w8ommcxc' } },
                                 name: user.nickname,
                             }
                         });

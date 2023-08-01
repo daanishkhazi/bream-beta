@@ -5,7 +5,7 @@ import { User } from "@/types/dbTypes";
 import { useState, useEffect } from "react";
 
 interface SimpleMachine {
-  id: number;
+  id: string;
   name: string;
   associated: boolean;
 }
@@ -18,13 +18,13 @@ export default function UserProfile({
   allMachines: SimpleMachine[];
 }) {
   // Define the state types
-  const [machines, setMachines] = useState<Record<number, SimpleMachine>>({});
+  const [machines, setMachines] = useState<Record<string, SimpleMachine>>({});
   const [role, setRole] = useState(user.role);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     const machinesObj = allMachines.reduce(
-      (acc: Record<number, SimpleMachine>, machine) => {
+      (acc: Record<string, SimpleMachine>, machine) => {
         acc[machine.id] = {
           ...machine,
           associated:
@@ -39,7 +39,7 @@ export default function UserProfile({
     setMachines(machinesObj);
   }, []);
 
-  const handleCheckboxChange = (id: number) => {
+  const handleCheckboxChange = (id: string) => {
     setMachines((prevMachines) => ({
       ...prevMachines,
       [id]: {
@@ -70,7 +70,7 @@ export default function UserProfile({
       credentials: "include",
     });
     if (!response.ok) {
-      console.log("Update failed");
+      console.log("User update failed");
     } else {
       setEditMode(false);
     }
@@ -170,7 +170,7 @@ export const getServerSideProps = withPageAuthRequired({
 
     // Get the requested user and their machines
     const requestedUser = await prisma.user.findUnique({
-      where: { id: Number(params?.user) },
+      where: { id: params?.user as string },
       include: {
         machines: {
           select: {
@@ -180,7 +180,7 @@ export const getServerSideProps = withPageAuthRequired({
         },
       },
     });
-    console.log(requestedUser);
+
     if (!requestedUser) {
       return { notFound: true };
     }

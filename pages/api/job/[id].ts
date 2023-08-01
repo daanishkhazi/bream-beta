@@ -7,10 +7,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'PUT') {
     return res.status(405).end();
   }
-  console.log(req.query)
   const job = req.body;
   const updatedJob = await prisma.job.update({
-    where: { id: Number(req.query.id) },
+    where: { id: req.query.id as string },
     data: {
       name: job.name,
       description: job.description,
