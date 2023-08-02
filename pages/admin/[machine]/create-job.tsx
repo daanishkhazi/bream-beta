@@ -92,9 +92,15 @@ export default function NewJobPage() {
 
             {[
               { key: "description" as const, label: "Description" },
-              { key: "setupNotes" as const, label: "Setup Notes" },
-              { key: "operationNotes" as const, label: "Operation Notes" },
-              { key: "qualityNotes" as const, label: "Quality Notes" },
+              { key: "setupNotes" as const, label: "Setup & Tooling Notes" },
+              {
+                key: "operationNotes" as const,
+                label: "Operation & Safety Notes",
+              },
+              {
+                key: "qualityNotes" as const,
+                label: "Quality & Inspection Notes",
+              },
             ].map(({ key, label }) => (
               <div key={key}>
                 <label className="block text-sm font-medium text-gray-700">

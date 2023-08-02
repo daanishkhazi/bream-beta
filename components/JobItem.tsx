@@ -8,7 +8,7 @@ const JobItem: React.FC<JobItemProps> = ({ job }) => {
   return (
     <div className="flex justify-between items-start bg-white border-black border-2 shadow-nb p-4 mb-4 rounded hover:scale-[101%] transition ease-in-out delay-50">
       <div className="flex flex-col">
-        <h3 className="text-lg font-bold">{`${job.name} ${job.part}`}</h3>
+        <h3 className="text-lg font-bold">{`${job.name} - ${job.part}`}</h3>
         <p className="text-sm text-gray-600">{job.description}</p>
       </div>
       <div

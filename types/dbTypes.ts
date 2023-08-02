@@ -35,13 +35,27 @@ name: string;
 description: string | null;
 generalNotes: string | null;
 maintenanceNotes: string | null;
-prompt: string | null;
+prompt?: string | null;
 isActive: boolean;
-tenantId: string;
+tenantId?: string;
 jobs?: Job[];
 tenant?: Tenant;
 users?: User[];
 }
+
+export interface ChatMachine {
+    id: string;
+    name: string;
+    description: string | null;
+    generalNotes: string | null;
+    maintenanceNotes: string | null;
+    prompt?: string | null;
+    isActive: boolean;
+    tenantId?: string;
+    jobs: Job[];
+    tenant?: Tenant;
+    users?: User[];
+    }
 
 export interface Job {
 id: string;
@@ -54,6 +68,6 @@ qualityNotes?: string | null;
 prompt?: string | null;
 gCode?: string | null;
 isActive: boolean;
-machineId: string;
+machineId?: string;
 machine?: Machine;
 }

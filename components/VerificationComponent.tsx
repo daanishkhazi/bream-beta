@@ -1,11 +1,6 @@
-import { User } from "@/types/dbTypes";
 import { useState } from "react";
 
-export default function VerificationComponent({
-  loadedUser,
-}: {
-  loadedUser: User;
-}) {
+export default function VerificationComponent() {
   const [code, setCode] = useState("");
 
   const handleSubmit = async (e: any) => {

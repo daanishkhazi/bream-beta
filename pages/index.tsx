@@ -3,14 +3,19 @@ import { Inter } from "next/font/google";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { withPageAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import Layout from "@/components/Layout";
-import { User } from "@/types/dbTypes";
+import { User, ChatMachine, Job } from "@/types/dbTypes";
 import prisma from "@/lib/prisma";
 import VerificationComponent from "@/components/VerificationComponent";
 import Chat from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ loadedUser }: { loadedUser: User }) {
+type HomeProps = {
+  loadedUser: User | undefined;
+  machines: ChatMachine[];
+};
+
+export default function Home({ loadedUser, machines }: HomeProps) {
   const { user, error, isLoading } = useUser();
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -20,9 +25,11 @@ export default function Home({ loadedUser }: { loadedUser: User }) {
       <Layout>
         <div className="flex bg-[#FCFDF7] min-h-screen justify-center p-16">
           {!loadedUser || !loadedUser.verified ? (
-            <VerificationComponent loadedUser={loadedUser} />
+            <VerificationComponent />
+          ) : machines ? (
+            <Chat machines={machines} />
           ) : (
-            <Chat />
+            <div>Loading...</div>
           )}
         </div>
       </Layout>
@@ -49,15 +56,16 @@ export const getServerSideProps = withPageAuthRequired({
     params,
     req,
     res,
-  }): Promise<{ props: { loadedUser: User | undefined } }> => {
+  }): Promise<{ props: HomeProps }> => {
     const session = await getSession(req, res);
+
     if (!session || !session.user) {
       return {
-        props: { loadedUser: undefined },
+        props: { loadedUser: undefined, machines: [] },
       };
     }
 
-    const loadedUser = await prisma.user.findUnique({
+    const loadedData = await prisma.user.findUnique({
       where: {
         auth0Id: session.user.sub,
       },
@@ -67,17 +75,45 @@ export const getServerSideProps = withPageAuthRequired({
         tenantId: true,
         verified: true,
         role: true,
+        machines: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            generalNotes: true,
+            maintenanceNotes: true,
+            isActive: true,
+            jobs: {
+              select: {
+                id: true,
+                name: true,
+                part: true,
+                description: true,
+                setupNotes: true,
+                operationNotes: true,
+                qualityNotes: true,
+                isActive: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    if (!loadedUser) {
+    if (!loadedData) {
       return {
-        props: { loadedUser: undefined },
+        props: { loadedUser: undefined, machines: [] },
       };
     }
-
+    let { machines, ...loadedUser } = loadedData;
+    machines = machines.filter(
+      (machine) => machine.isActive && machine.jobs.some((job) => job.isActive)
+    );
+    machines.forEach((machine) => {
+      machine.jobs = machine.jobs.filter((job) => job.isActive);
+    });
     return {
-      props: { loadedUser },
+      props: { loadedUser, machines },
     };
   },
 });
