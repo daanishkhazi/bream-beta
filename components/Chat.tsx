@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { Job, ChatMachine } from "@/types/dbTypes";
 
@@ -19,6 +19,15 @@ export default function Chat({ machines }: ChatProps) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [messages]);
 
   useEffect(() => {
     // Find first machine with jobs
@@ -44,7 +53,7 @@ export default function Chat({ machines }: ChatProps) {
 
         You're currently manning the ${selectedMachine.name}, characterized by ${selectedMachine.description}. What to know: ${selectedMachine.generalNotes}. Maintenance specifics: ${selectedMachine.maintenanceNotes}.
         
-        You're executing the job: ${selectedJob.name}, on part ${selectedJob.part}, involving ${selectedJob.description}. Tooling and setup guidelines: ${selectedJob.setupNotes}. Operation and safety insights: ${selectedJob.operationNotes}. Quality and inspection notes: ${selectedJob.qualityNotes}`,
+        You're executing the job: ${selectedJob.name}, on part ${selectedJob.part}, involving ${selectedJob.description}. Tooling and setup guidelines (remember that the asker should have a setup sheet with all the tooling detailed, so don't list off tools required): ${selectedJob.setupNotes}. Operation and safety insights: ${selectedJob.operationNotes}. Quality and inspection notes: ${selectedJob.qualityNotes}`,
       };
 
       // Reset the messages array to just the new system message
@@ -78,7 +87,9 @@ export default function Chat({ machines }: ChatProps) {
     // create a user message
     const userMessage: Message = {
       role: "user",
-      content: input,
+      content:
+        "Please answer the following in a concise, tactical and actionable way: " +
+        input,
     };
 
     // append user message to messages and get updated messages
@@ -116,7 +127,7 @@ export default function Chat({ machines }: ChatProps) {
   if (!selectedMachine) return <div>No machines available</div>;
 
   return (
-    <div className="flex w-full h-[75vh] bg-[#fcfdf7] p-16">
+    <div className="flex w-full h-[44rem] bg-[#fcfdf7] p-4 px-16">
       <div className="flex flex-col w-1/4 h-full bg-white border-black border-2 shadow-nb p-4 mb-4 rounded overflow-y-auto">
         {selectedMachine?.jobs.map((job) => (
           <button
@@ -131,7 +142,7 @@ export default function Chat({ machines }: ChatProps) {
         ))}
       </div>
       <div className="flex flex-col w-3/4 h-full ml-4">
-        <div className="p-4 w-full h-1/8 bg-white border-black border-2 shadow-nb rounded cursor-pointer font-bold hover:scale-[101%] transition ease-in-out delay-50">
+        <div className="p-4 w-full h-[4rem] bg-white border-black border-2 shadow-nb rounded cursor-pointer font-bold hover:scale-[101%] transition ease-in-out delay-50">
           <select
             value={selectedMachine.id}
             onChange={handleMachineChange}
@@ -144,10 +155,7 @@ export default function Chat({ machines }: ChatProps) {
             ))}
           </select>
         </div>
-        <div
-          className="flex flex-col justify-between h-full p-4 bg-white border-black border-2 shadow-nb rounded mt-4"
-          style={{ maxHeight: "91.5%" }}
-        >
+        <div className="flex flex-col justify-between h-[37rem] p-4 bg-white border-black border-2 shadow-nb rounded mt-4">
           <div className="overflow-auto flex-grow">
             {messages.slice(1).map((message, index) => (
               <div
@@ -160,11 +168,26 @@ export default function Chat({ machines }: ChatProps) {
                   message.role === "assistant" ? "bg-gray-100" : "bg-white"
                 }`}
               >
-                {message.content.split("\n").map((item, key) => {
-                  return <p key={key}>{item}</p>;
-                })}
+                {message.role === "user"
+                  ? message.content
+                      .replace(
+                        "Please answer the following in a concise, tactical and actionable way: ",
+                        ""
+                      )
+                      .split("\n")
+                      .filter((item) => item)
+                      .map((item, key) => {
+                        return <p key={key}>{item}</p>;
+                      })
+                  : message.content
+                      .split("\n")
+                      .filter((item) => item)
+                      .map((item, key) => {
+                        return <p key={key}>{item}</p>;
+                      })}
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
           <div className="border-t-2 border-gray-400 p-2 flex mt-4">
             <input
