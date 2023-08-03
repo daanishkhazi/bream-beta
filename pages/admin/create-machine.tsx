@@ -1,6 +1,5 @@
 // pages/machines/new.tsx
 import { useState } from "react";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 
