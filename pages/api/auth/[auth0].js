@@ -17,7 +17,7 @@ export default handleAuth({
                         await prisma.user.create({
                             data: {
                                 auth0Id: user.sub,
-                                tenant: { connect: { id: 'clkratdg20000x0z9w8ommcxc' } },
+                                tenant: { connect: { id: 'clkvm4kiz0000x0w57b8wl5ox' } },
                                 name: user.nickname,
                             }
                         });
