@@ -88,7 +88,7 @@ export default function Chat({ machines }: ChatProps) {
     const userMessage: Message = {
       role: "user",
       content:
-        "Please answer the following in a concise, tactical and actionable way: " +
+        "Please answer the following in a concise and tactical way. If you are going to list out options, list out no more 3: " +
         input,
     };
 
@@ -171,7 +171,7 @@ export default function Chat({ machines }: ChatProps) {
                 {message.role === "user"
                   ? message.content
                       .replace(
-                        "Please answer the following in a concise, tactical and actionable way: ",
+                        "Please answer the following in a concise and tactical way. If you are going to list out options, list out no more 3: ",
                         ""
                       )
                       .split("\n")

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -27,7 +28,12 @@ export default function Home({ loadedUser, machines }: HomeProps) {
           {!loadedUser || !loadedUser.verified ? (
             <VerificationComponent />
           ) : machines ? (
-            <Chat machines={machines} />
+            <div className="flex flex-col w-full">
+              <h1 className="text-3xl font-bold text-center mb-4">
+                Welcome, {loadedUser.name}
+              </h1>
+              <Chat machines={machines} />
+            </div>
           ) : (
             <div>Loading...</div>
           )}
