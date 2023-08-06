@@ -18,12 +18,16 @@ export default function NewJobPage() {
     machineId: machineId,
   });
   const [placeholders, setPlaceholders] = useState({
-    name: "asdf",
-    description: "asdf",
-    setupNotes: "asdf",
-    operationNotes: "asdf",
-    qualityNotes: "asdf",
-    part: "asdf",
+    name: "Name",
+    description:
+      "Job requirements, part complexity, material characteristics, and intended function.",
+    setupNotes:
+      "Recommended tools, specific tooling arrangements, and setup best practices for the specific job.",
+    operationNotes:
+      "Best practices for safe operation, handling potential hazards, and precautions to prevent accidents.",
+    qualityNotes:
+      "Dimensional tolerances, surface finish requirements, special inspection techniques, and tools needed for quality assurance.",
+    part: "Part",
   });
   const handleCreate = async () => {
     const res = await fetch(`/api/job/create`, {

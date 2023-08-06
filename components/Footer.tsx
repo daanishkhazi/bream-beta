@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="font-medium">© 2023 Bream Labs, Inc.</div>
       <div className="flex items-center space-x-4">
         {/* <Link href="/help">Help</Link> */}
-        <Link href="/privacy">Privacy</Link>
-        <Link href="/terms">Terms</Link>
+        <Link href="https://www.trybream.com/privacy">Privacy</Link>
+        <Link href="https://www.trybream.com/terms">Terms</Link>
       </div>
     </footer>
   );

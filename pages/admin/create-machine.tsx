@@ -13,10 +13,13 @@ export default function NewMachinePage() {
     isActive: true,
   });
   const [placeholders, setPlaceholders] = useState({
-    name: "asdf",
-    description: "asdf",
-    generalNotes: "asdf",
-    maintenanceNotes: "asdf",
+    name: "Name",
+    description:
+      "Key features, special functionalities, and capabilities of the machine.",
+    generalNotes:
+      "Specific observations, performance quirks, and tips for optimal machine operation.",
+    maintenanceNotes:
+      "Recommended maintenance practices, common issues, and their solutions.",
   });
 
   const handleCreate = async () => {
