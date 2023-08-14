@@ -33,6 +33,10 @@ export default function Home({ loadedUser, machines }: HomeProps) {
                 Welcome, {loadedUser.name}
               </h1>
               <Chat machines={machines} />
+              <p className="text-center mt-4 italic text-lg">
+                Bream may respond with incorrect or offensive information.
+                Always check with a supervisor before taking drastic action
+              </p>
             </div>
           ) : (
             <div>Loading...</div>

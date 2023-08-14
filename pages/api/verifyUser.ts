@@ -35,16 +35,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(404).json({ message: "Code not found" });
     }
 
+    const existingAdmins = await prisma.user.count({
+        where: {
+            tenantId: verificationCode.tenantId,
+            role: 'ADMIN',
+        }
+    });
+    const role = existingAdmins === 0 ? 'ADMIN' : 'USER';
+
     const updatedUser = await prisma.user.update({
         where: { id: dBuser.id },
         data: {
             verified: true,
             name: verificationCode.name,
             tenantId: verificationCode.tenantId,
+            role: role,
         }
     });
 
-    return res.status(200).json({ message: "User verified" });
+    return res.status(200).json({ message: "User verified" , role: role});
 }
 
 export default withApiAuthRequired(handler);

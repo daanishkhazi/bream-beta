@@ -9,6 +9,7 @@ name: string | null;
 role: Role;
 tenant?: Tenant;
 machines?: Machine[];
+breamEmployee?: boolean;
 }
 
 export interface Tenant {

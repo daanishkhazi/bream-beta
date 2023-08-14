@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  auth0Id  String    @unique
-  tenantId String
-  name     String?
-  verified Boolean   @default(false)
-  role     Role      @default(USER)
-  tenant   Tenant    @relation(fields: [tenantId], references: [id])
-  machines Machine[] @relation("userMachine")
+  id            String    @id @default(cuid())
+  auth0Id       String    @unique
+  tenantId      String
+  name          String?
+  verified      Boolean   @default(false)
+  breamEmployee Boolean   @default(false)
+  role          Role      @default(USER)
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  machines      Machine[] @relation("userMachine")
 }
 
 model Tenant {
   id       String    @id @default(cuid())
   name     String    @unique
+  tier     Tier      @default(LEVEL1)
   codes    Code[]
   machines Machine[]
   users    User[]
@@ -68,4 +70,12 @@ model Job {
 enum Role {
   USER
   ADMIN
+}
+
+enum Tier {
+  LEVEL1
+  LEVEL2
+  LEVEL3
+  LEVEL4
+  LEVEL5
 }
