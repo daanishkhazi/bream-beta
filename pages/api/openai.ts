@@ -2,11 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { Configuration, OpenAIApi } from "openai";
 
-export const config = {
-  runtime: "edge",
-};
-
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const configuration = new Configuration({
@@ -33,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!chatCompletion.data.choices[0].message?.content) {
         return res.status(404).json({ message: "No response from AI" });
     }
-    console.log(chatCompletion.data.choices[0].message)
     return res.status(200).json({ role: chatCompletion.data.choices[0].message?.role, content: chatCompletion.data.choices[0].message?.content });
 }
 
