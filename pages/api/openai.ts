@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { Configuration, OpenAIApi } from "openai";
-import prisma from '@/lib/prisma';
+
+export const config = {
+  runtime: "edge",
+};
+
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
