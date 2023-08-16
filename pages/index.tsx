@@ -35,7 +35,7 @@ export default function Home({ loadedUser, machines }: HomeProps) {
               <Chat machines={machines} />
               <p className="text-center mt-4 italic text-lg">
                 Bream may respond with incorrect or offensive information.
-                Always check with a supervisor before taking serious action.
+                Always check with a supervisor before taking any serious action.
               </p>
             </div>
           ) : (
