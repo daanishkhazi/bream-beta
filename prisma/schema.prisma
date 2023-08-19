@@ -20,12 +20,13 @@ model User {
 }
 
 model Tenant {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  tier     Tier      @default(LEVEL1)
-  codes    Code[]
-  machines Machine[]
-  users    User[]
+  id          String    @id @default(cuid())
+  name        String    @unique
+  tier        Tier      @default(LEVEL1)
+  maxMachines Int       @default(5)
+  codes       Code[]
+  machines    Machine[]
+  users       User[]
 }
 
 model Code {
